@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Parse
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,7 +17,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+//        //Add Event Listener for when user logs out
+//        NotificationCenter.default.addObserver(forName: Notification.Name("login"), object: nil, queue: OperationQueue.main) { (Notification) in
+//            print("Logout notification received")
+//
+//            //Load and show Login view controller
+//            self.login()
+//
+//        }
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        
+        if PFUser.current() != nil {
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            self.window = UIWindow(windowScene: windowScene)
+            
+            self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "FeedNavigationController")
+            print("window%@", window as Any)
+            self.window?.makeKeyAndVisible()
+            
+        }
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,6 +71,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
+    func login() {
+        
+        let main = UIStoryboard(name: "Main", bundle: nil)
+        //View Controller currently being set in Storyboard as default will be overriden
+        let feedNavigationController = main.instantiateViewController(withIdentifier: "FeedNavigationController")
+        
+    }
+    
 }
+
 
